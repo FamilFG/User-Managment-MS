@@ -36,11 +36,10 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<SuccessDto<UserResponseDto>> deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<SuccessDto<UserResponseDto>> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
         SuccessDto<UserResponseDto> successDto = new SuccessDto<>(SUCCESS, null);
         return new ResponseEntity<>(successDto, HttpStatus.OK);
     }
 
-    @PutMapping("/put")
 }

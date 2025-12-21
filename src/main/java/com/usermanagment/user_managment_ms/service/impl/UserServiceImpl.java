@@ -6,9 +6,11 @@ import com.usermanagment.user_managment_ms.entity.UserEntity;
 import com.usermanagment.user_managment_ms.mapper.UserMapper;
 import com.usermanagment.user_managment_ms.repository.UserRepository;
 import com.usermanagment.user_managment_ms.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,13 +45,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto deleteUser(Integer id) {
-        if (!userRepository.existsById(id)) {
+    @Transactional
+    public void deleteUser(String userName) {
+        UserEntity user = userRepository.findByUserName(userName);
+        if (user == null) {
             throw new RuntimeException("User not found");
         }
-        userRepository.deleteById(id);
-        return userMapper.mapUserResponseToEntity(userRepository.findById(id).get());
+        userRepository.deleteByUserName(userName);
     }
+
+
 
 
 }

@@ -14,3 +14,4 @@ spring:
 server:
   servlet:
     context-path: /user-managment-ms
+  port: 8080
