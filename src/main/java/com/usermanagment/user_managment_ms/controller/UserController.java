@@ -2,7 +2,9 @@ package com.usermanagment.user_managment_ms.controller;
 
 import com.usermanagment.user_managment_ms.dto.SuccessDto;
 import com.usermanagment.user_managment_ms.dto.req.UserRequestDto;
+import com.usermanagment.user_managment_ms.dto.req.UserUpdateRequestDto;
 import com.usermanagment.user_managment_ms.dto.res.UserResponseDto;
+import com.usermanagment.user_managment_ms.dto.res.UserUpdateResponseDto;
 import com.usermanagment.user_managment_ms.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/add-users")
+    @PostMapping("/users")
     public ResponseEntity<SuccessDto<UserResponseDto>> createUsers(@RequestBody UserRequestDto userRequestDto) {
 
         UserResponseDto userResponseDto = userService.createUser(userRequestDto);
@@ -35,11 +37,21 @@ public class UserController {
         return new ResponseEntity<>(successDto, HttpStatus.OK).getBody();
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<SuccessDto<UserResponseDto>> deleteUser(@PathVariable String id) {
-        userService.deleteUser(id);
-        SuccessDto<UserResponseDto> successDto = new SuccessDto<>(SUCCESS, null);
-        return new ResponseEntity<>(successDto, HttpStatus.OK);
+    @DeleteMapping("/users/{userName}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUsers(@PathVariable String userName) {
+        userService.deleteUser(userName);
     }
+
+    @PutMapping("/user/{userName}")
+    public ResponseEntity<SuccessDto<UserUpdateResponseDto>> updateUser(@PathVariable String userName, @RequestBody UserUpdateRequestDto userRequestDto) {
+        UserUpdateResponseDto userResponseDto = userService.updateUser(userRequestDto, userName);
+
+        SuccessDto<UserUpdateResponseDto> successDto = new SuccessDto<>(SUCCESS, userResponseDto);
+        return new ResponseEntity<>(successDto, HttpStatus.CREATED);
+
+    }
+
+
 
 }
