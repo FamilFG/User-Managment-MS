@@ -1,29 +1,16 @@
-User-Management Microservice
-
-This repository contains the User-Management Microservice, a core component of a larger microservices-based system. The overall project is designed with a scalable, event-driven architecture and includes multiple backend services and a Flutter frontend.
-
-Service Responsibility
-
-The User-Management Microservice is responsible for:
-
-User registration and profile management
-
-User data CRUD operations
-
-Role and permission handling
-
-User lifecycle management
-
-It exposes REST APIs that are consumed by other microservices and the frontend application.
-
-Context
-
-This service is part of a larger distributed system that includes additional microservices, Kafka-based communication, and a Flutter mobile application, which are developed and maintained in separate repositories.
-
-Tech Stack
-
-Java
-
-Spring Boot
-
-REST APIs
+**User-Management Microservice**
+This document describes the User-Management Microservice, which is a core part of a larger microservices-based system. The overall project includes multiple backend services, event-driven communication, and a Flutter mobile frontend.
+Service Overview
+The User-Management Microservice is responsible for managing users and their related data. It provides REST APIs that are consumed by other services and client applications.
+**Responsibilities**
+- User registration and profile management
+- User data CRUD operations
+- Role and permission handling
+- User lifecycle management
+**Project Context**
+This microservice is developed as part of a larger distributed system that follows a microservices architecture. Other services, messaging infrastructure, and the frontend application are maintained in separate repositories.
+**Technology Stack**
+• MySQL
+• Java
+• Spring Boot
+• REST APIs
