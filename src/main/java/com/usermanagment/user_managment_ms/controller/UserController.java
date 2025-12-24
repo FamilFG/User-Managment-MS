@@ -23,35 +23,32 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/users")
-    public ResponseEntity<SuccessDto<UserResponseDto>> createUsers(@RequestBody UserRequestDto userRequestDto) {
-
+    public ResponseEntity<SuccessDto<UserResponseDto>> createUser(@RequestBody UserRequestDto userRequestDto) {
         UserResponseDto userResponseDto = userService.createUser(userRequestDto);
         SuccessDto<UserResponseDto> successDto = new SuccessDto<>(SUCCESS, userResponseDto);
         return new ResponseEntity<>(successDto, HttpStatus.CREATED);
-
     }
+
     @GetMapping("/users")
-    public SuccessDto<List<UserResponseDto>> allStudents(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<SuccessDto<List<UserResponseDto>>> getAllUsers() {
         List<UserResponseDto> users = userService.allStudents();
         SuccessDto<List<UserResponseDto>> successDto = new SuccessDto<>(SUCCESS, users);
-        return new ResponseEntity<>(successDto, HttpStatus.OK).getBody();
+        return new ResponseEntity<>(successDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{userName}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUsers(@PathVariable String userName) {
+    public void deleteUser(@PathVariable String userName) {
         userService.deleteUser(userName);
     }
 
-    @PutMapping("/user/{userName}")
-    public ResponseEntity<SuccessDto<UserUpdateResponseDto>> updateUser(@PathVariable String userName, @RequestBody UserUpdateRequestDto userRequestDto) {
+    @PutMapping("/users/{userName}")
+    public ResponseEntity<SuccessDto<UserUpdateResponseDto>> updateUser(
+            @PathVariable String userName,
+            @RequestBody UserUpdateRequestDto userRequestDto) {
+
         UserUpdateResponseDto userResponseDto = userService.updateUser(userRequestDto, userName);
-
         SuccessDto<UserUpdateResponseDto> successDto = new SuccessDto<>(SUCCESS, userResponseDto);
-        return new ResponseEntity<>(successDto, HttpStatus.CREATED);
-
+        return new ResponseEntity<>(successDto, HttpStatus.OK);
     }
-
-
-
 }

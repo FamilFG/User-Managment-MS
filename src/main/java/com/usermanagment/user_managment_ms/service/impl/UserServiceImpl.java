@@ -12,12 +12,11 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -27,24 +26,23 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     UserMapper userMapper;
 
-
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
-
+        if(userRepository.existsByUserName(userRequestDto.userName())) {
+            throw new RuntimeException("User with username " + userRequestDto.userName() + " already exists");
+        }
         UserEntity userEntity = userMapper.mapRequestDtoToEntity(userRequestDto);
         userRepository.save(userEntity);
         return userMapper.mapUserResponseToEntity(userEntity);
-
     }
+
 
     @Override
     public List<UserResponseDto> allStudents() {
-        List<UserEntity> users = userRepository.findAll();
-        List<UserResponseDto> userResponses = new ArrayList<>();
-        for (UserEntity user : users) {
-            userResponses.add(userMapper.mapUserResponseToEntity(user));
-        }
-        return userResponses;
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::mapUserResponseToEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,13 +55,13 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteByUserName(userName);
     }
 
-
     @Override
     public UserUpdateResponseDto updateUser(UserUpdateRequestDto userRequestDto, String username) {
         UserEntity userEntity = userRepository.findByUserName(username);
         if (userEntity == null) {
             throw new RuntimeException("User not found");
         }
+
         userEntity.setName(userRequestDto.name());
         userEntity.setSurname(userRequestDto.surname());
         userEntity.setEmail(userRequestDto.email());
@@ -73,6 +71,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setUpdatedAt(LocalDateTime.now());
 
         userRepository.save(userEntity);
+
         return UserUpdateResponseDto.builder()
                 .name(userEntity.getName())
                 .surname(userEntity.getSurname())
@@ -81,9 +80,5 @@ public class UserServiceImpl implements UserService {
                 .birthDate(userEntity.getBirthDate())
                 .role(userEntity.getRole())
                 .build();
-
     }
-
-
-
 }
