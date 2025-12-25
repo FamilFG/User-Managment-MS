@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 import static com.usermanagment.user_managment_ms.utils.Status.SUCCESS;
 
 @RestController
@@ -30,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<SuccessDto<List<UserResponseDto>>> getAllUsers() {
-        List<UserResponseDto> users = userService.allStudents();
+    public ResponseEntity<SuccessDto<List<UserResponseDto>>> allUsers() {
+        List<UserResponseDto> users = userService.allUsers();
         SuccessDto<List<UserResponseDto>> successDto = new SuccessDto<>(SUCCESS, users);
         return new ResponseEntity<>(successDto, HttpStatus.OK);
     }

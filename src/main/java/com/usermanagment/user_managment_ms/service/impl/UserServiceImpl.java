@@ -38,11 +38,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserResponseDto> allStudents() {
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::mapUserResponseToEntity)
-                .collect(Collectors.toList());
+    public List<UserResponseDto> allUsers() {
+        List<UserEntity> userEntities = userRepository.findAll();
+        return userMapper.mapEntityListToResponseList(userEntities);
+
     }
 
     @Override

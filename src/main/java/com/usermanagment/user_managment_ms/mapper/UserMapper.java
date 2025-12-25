@@ -5,6 +5,8 @@ import com.usermanagment.user_managment_ms.dto.res.UserResponseDto;
 import com.usermanagment.user_managment_ms.entity.UserEntity;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
@@ -12,4 +14,5 @@ public interface UserMapper {
     UserEntity mapRequestDtoToEntity(UserRequestDto userRequestDto);
     UserResponseDto mapUserResponseToEntity(UserEntity userEntity);
 
+    List<UserResponseDto> mapEntityListToResponseList(List<UserEntity> userEntities);
 }
