@@ -10,9 +10,9 @@ public class MockData {
         return UserRequestDto.builder()
                 .reqName("Will")
                 .surname("Smith")
-                .userName("will_smith")
+                .userName("user-placeholder")
                 .email("will@test.com")
-                .password("123333")
+                .password("password-placeholder")
                 .role(UserRole.USER)
                 .build();
     }
@@ -22,9 +22,9 @@ public class MockData {
         return UserEntity.builder()
                 .name("Will")
                 .surname("Smith")
-                .userName("will_smith")
+                .userName("user-placeholder")
                 .email("will@test.com")
-                .password("encoded")
+                .password("password-placeholder")
                 .role(UserRole.USER)
                 .build();
     }
