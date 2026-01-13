@@ -6,6 +6,7 @@ import com.usermanagment.user_managment_ms.dto.req.UserUpdateRequestDto;
 import com.usermanagment.user_managment_ms.dto.res.UserResponseDto;
 import com.usermanagment.user_managment_ms.dto.res.UserUpdateResponseDto;
 import com.usermanagment.user_managment_ms.entity.UserEntity;
+import com.usermanagment.user_managment_ms.exception.*;
 import com.usermanagment.user_managment_ms.mapper.UserMapper;
 import com.usermanagment.user_managment_ms.repository.UserRepository;
 import com.usermanagment.user_managment_ms.service.UserService;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -32,11 +32,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
+        if (userRepository.existsByUserName(userRequestDto.userName())) {
+            throw new UserAlreadyExists("User already exists");
+        }
         UserEntity userEntity = userMapper.mapRequestDtoToEntity(userRequestDto);
         userEntity.setPassword(passwordEncoderConfig.passwordEncoder()
                 .encode(userRequestDto.password()));
         userRepository.save(userEntity);
-        userRepository.save(userEntity);
+
 
         return userMapper.mapUserResponseToEntity(userEntity);
 
@@ -55,22 +58,26 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String userName) {
         UserEntity user = userRepository.findByUserName(userName);
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
         userRepository.deleteByUserName(userName);
     }
 
     @Override
+    @Transactional
     public UserUpdateResponseDto updateUser(UserUpdateRequestDto userRequestDto, String username) {
         UserEntity userEntity = userRepository.findByUserName(username);
         if (userEntity == null) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         userEntity.setName(userRequestDto.name());
         userEntity.setSurname(userRequestDto.surname());
         userEntity.setEmail(userRequestDto.email());
-        userEntity.setPassword(userRequestDto.password());
+        userEntity.setPassword(
+                passwordEncoderConfig.passwordEncoder()
+                        .encode(userRequestDto.password())
+        );
         userEntity.setRole(userRequestDto.role());
         userEntity.setBirthDate(userRequestDto.birthDate());
         userEntity.setUpdatedAt(LocalDateTime.now());
@@ -86,4 +93,13 @@ public class UserServiceImpl implements UserService {
                 .role(userEntity.getRole())
                 .build();
     }
+    @Override
+    public UserResponseDto getUserByUsername(String username) {
+        UserEntity userEntity = userRepository.findByUserName(username);
+        if (userEntity == null) {
+            throw new UserNotFoundException("User not found with username: " + username);
+        }
+        return userMapper.mapUserResponseToEntity(userEntity);
+    }
+
 }
