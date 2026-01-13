@@ -1,5 +1,6 @@
 package com.usermanagment.user_managment_ms.service.impl;
 
+import com.usermanagment.user_managment_ms.config.PasswordEncoderConfig;
 import com.usermanagment.user_managment_ms.dto.req.UserRequestDto;
 import com.usermanagment.user_managment_ms.dto.req.UserUpdateRequestDto;
 import com.usermanagment.user_managment_ms.dto.res.UserResponseDto;
@@ -25,15 +26,20 @@ public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    PasswordEncoderConfig passwordEncoderConfig;
+
+
 
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
-        if(userRepository.existsByUserName(userRequestDto.userName())) {
-            throw new RuntimeException("User with username " + userRequestDto.userName() + " already exists");
-        }
         UserEntity userEntity = userMapper.mapRequestDtoToEntity(userRequestDto);
+        userEntity.setPassword(passwordEncoderConfig.passwordEncoder()
+                .encode(userRequestDto.password()));
         userRepository.save(userEntity);
+        userRepository.save(userEntity);
+
         return userMapper.mapUserResponseToEntity(userEntity);
+
     }
 
 
