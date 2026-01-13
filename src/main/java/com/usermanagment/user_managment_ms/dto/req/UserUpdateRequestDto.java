@@ -9,7 +9,7 @@ import lombok.Builder;
 import java.time.Instant;
 @Builder
 public record UserUpdateRequestDto(
-        @NotBlank(message = "Name cant be null")
+        @NotBlank(message = "Name cant be null!")
         String name,
         @Size(min = 3,max = 10,message = "Too long/short!")
         String surname,
