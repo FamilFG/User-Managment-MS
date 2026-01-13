@@ -8,10 +8,10 @@ import com.usermanagment.user_managment_ms.utils.UserRole;
 public class MockData {
     public static UserRequestDto userRequestDto() {
         return UserRequestDto.builder()
-                .reqName("Will")
-                .surname("Smith")
+                .reqName("some")
+                .surname("some")
                 .userName("user-placeholder")
-                .email("will@test.com")
+                .email("some@test.com")
                 .password("password-placeholder")
                 .role(UserRole.USER)
                 .build();
@@ -20,10 +20,10 @@ public class MockData {
 
     public static UserEntity userEntity() {
         return UserEntity.builder()
-                .name("Will")
-                .surname("Smith")
+                .name("some")
+                .surname("some")
                 .userName("user-placeholder")
-                .email("will@test.com")
+                .email("some@test.com")
                 .password("password-placeholder")
                 .role(UserRole.USER)
                 .build();
