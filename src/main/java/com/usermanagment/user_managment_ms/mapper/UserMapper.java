@@ -12,7 +12,9 @@ import java.util.List;
 public interface UserMapper {
 
     @Mapping(source = "reqName", target = "name")
+    @Mapping(target = "password", ignore = true)
     UserEntity mapRequestDtoToEntity(UserRequestDto userRequestDto);
+
     UserResponseDto mapUserResponseToEntity(UserEntity userEntity);
 
     List<UserResponseDto> mapEntityListToResponseList(List<UserEntity> userEntities);

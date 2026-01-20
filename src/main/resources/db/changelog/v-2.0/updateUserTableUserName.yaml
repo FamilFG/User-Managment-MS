@@ -6,4 +6,4 @@ databaseChangeLog:
         - modifyDataType:
             tableName: users
             columnName: user_name
-            newDataType: VARCHAR(25)
+            newDataType: varchar(25)
