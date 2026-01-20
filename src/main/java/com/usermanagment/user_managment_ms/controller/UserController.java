@@ -34,9 +34,9 @@ public class UserController {
         SuccessDto<List<UserResponseDto>> successDto = new SuccessDto<>(SUCCESS, users);
         return new ResponseEntity<>(successDto, HttpStatus.OK);
     }
-    @GetMapping("/users/{username}")
-    public ResponseEntity<SuccessDto<UserResponseDto>> getUserByUsername(@PathVariable String username) {
-        UserResponseDto userResponseDto = userService.getUserByUsername(username);
+    @GetMapping("/users/{userName}")
+    public ResponseEntity<SuccessDto<UserResponseDto>> getUserByUsername(@PathVariable String userName) {
+        UserResponseDto userResponseDto = userService.getUserByUsername(userName);
         SuccessDto<UserResponseDto> successDto = new SuccessDto<>(SUCCESS, userResponseDto);
         return new ResponseEntity<>(successDto, HttpStatus.OK);
     }

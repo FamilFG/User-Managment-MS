@@ -1,5 +1,8 @@
+
 databaseChangeLog:
-  - include:
-      file: db/changelog/v-1.0/create-user-table.yaml
-  - include:
-      file: db/changelog/v-2.0/updateUserTableUserName.yaml
+  - includeAll:
+      path: db/changelog/v-1.0
+  - includeAll:
+      path: db/changelog/v-2.0
+  - includeAll:
+      path: db/changelog/v-3.0

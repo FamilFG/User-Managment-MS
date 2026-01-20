@@ -65,8 +65,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserUpdateResponseDto updateUser(UserUpdateRequestDto userRequestDto, String username) {
-        UserEntity userEntity = userRepository.findByUserName(username);
+    public UserUpdateResponseDto updateUser(UserUpdateRequestDto userRequestDto, String userName) {
+        UserEntity userEntity = userRepository.findByUserName(userName);
         if (userEntity == null) {
             throw new UserNotFoundException("User not found");
         }
@@ -94,10 +94,10 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
     @Override
-    public UserResponseDto getUserByUsername(String username) {
-        UserEntity userEntity = userRepository.findByUserName(username);
+    public UserResponseDto getUserByUsername(String userName) {
+        UserEntity userEntity = userRepository.findByUserName(userName);
         if (userEntity == null) {
-            throw new UserNotFoundException("User not found with username: " + username);
+            throw new UserNotFoundException("User not found with username: " + userName);
         }
         return userMapper.mapUserResponseToEntity(userEntity);
     }
